@@ -8,11 +8,11 @@ for id, string in enumerate(strings):
 	id += 1
 
 	cube_list = string.split(":")[1].strip()
-	cube_sets = [[x.strip() for x in cube_set.split(", ")] for cube_set in cube_list.split(";")]
+	cube_sets = [[cube for cube in cube_set.split(", ")] for cube_set in cube_list.split(";")]
 	
 	red, green, blue = 0, 0, 0
-	for cSet in cube_sets:
-		for cube in cSet:
+	for cube_set in cube_sets:
+		for cube in cube_set:
 			num = int(re.search(r'\d+', cube).group())
 			if 'red' in cube:
 				if num > red: red = num
