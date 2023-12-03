@@ -1,15 +1,28 @@
 import regex as re
-import time
+from dataclasses import dataclass
 
-DIM = 140 - 1
+@dataclass
+class PartNumber:
+	value: int
+	row: int
+	start: int
+	end: int
+
+@dataclass
+class Bounds:
+	up: int
+	down: int
+	left: int
+	right: int
+
 
 with open("../input.txt", 'r') as file:
 	strings = file.read().splitlines()
 
-aaa = []
+part_numbers = []
 
-total = 0
-for index, string in enumerate(strings):
+output = 0
+for row, string in enumerate(strings):
 	nums = [int(x) for x in re.findall(r'\d+', string)]
 
 	start = 0
@@ -18,40 +31,41 @@ for index, string in enumerate(strings):
 			if start == 0:
 				start = pos
 			if pos == len(string) - 1:
-				print(string[pos], nums[0], pos)
-				aaa.append([nums.pop(0), [index, start, pos]])
+				part_numbers.append(PartNumber(
+					nums.pop(0), row, start, pos
+				))
 				start = 0
 				continue
 			elif not string[pos + 1].isdigit():
-				print(string[pos], string[start:pos], nums[0], pos + 1)
-
-				aaa.append([nums.pop(0), [index, start, pos]])
+				part_numbers.append(PartNumber(
+					nums.pop(0), row, start, pos
+				))
 				start = 0
 				continue
 	
-for item in aaa:
+for part_number in part_numbers:
 	surrounding = ''
-	num = item[0]
-	row, start, end = item[1]
 
-	bounds = [0, 0, 0, 0]
-	if start is not 0: bounds[0] = 1
-	if end is not DIM: bounds[1] = 1
-	if row is not 0: bounds[2] = 1
-	if row is not DIM: bounds[3] = 1
+	num = part_number.value
+	row = part_number.row
+	start = part_number.start
+	end = part_number.end
 
-	if bounds[2]: surrounding += strings[row - 1][start - bounds[0]:end + bounds[1] + 1] + '\n'
-	surrounding += strings[row][start - bounds[0]:end + bounds[1] + 1] + '\n'
-	if bounds[3]: surrounding += strings[row + 1][start - bounds[0]:end + bounds[1] + 1]
+	bounds = Bounds(
+		row != 0,
+		row != len(strings) - 1,
+		start != 0,
+		end != len(strings) - 1
+	)
 
-	print(surrounding)
+	if bounds.up: surrounding += strings[row - 1][start - bounds.left:end + bounds.right + 1] + '\n'
+	surrounding += strings[row][start - bounds.left:end + bounds.right + 1] + '\n'
+	if bounds.down: surrounding += strings[row + 1][start - bounds.left:end + bounds.right + 1]
+
 	surrounding = surrounding.replace(".", '').strip()
 	surrounding = "".join([x for x in surrounding if not x.isdigit()])
-	print(surrounding)
-
 
 	if len(surrounding) > 0:
-		print(num)
-		total += num
+		output += num
 
-print(total)
+print(output)
