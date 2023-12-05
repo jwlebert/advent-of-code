@@ -1,12 +1,8 @@
 import regex as re
-from typing import List
-
-# class Mapping:
-# 	def __init__(self, map_string):
 
 
-with open("../input.txt", 'r') as file:
-	strings = file.read()#.splitlines()
+with open("../ex_input.txt", 'r') as file:
+	strings = file.read()
 
 seeds = [
 	int(seed)
