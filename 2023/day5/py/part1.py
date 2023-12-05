@@ -33,6 +33,15 @@ maps = [
 	]
 ][2:]
 
+mapped_seeds = []
 
-print(seeds)
-print(*maps, sep='\n\n')
+for seed in seeds:
+	for map in maps:
+		for (dest, src, length) in map:
+			if seed not in range(src, src + length + 1): continue
+			distance = seed - src
+			seed = dest + distance
+			break
+	mapped_seeds.append(seed)
+	
+print(min(mapped_seeds))
