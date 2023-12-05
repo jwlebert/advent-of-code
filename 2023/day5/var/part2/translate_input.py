@@ -1,6 +1,7 @@
 import regex as re
+import json
 
-with open("../ex_input.txt", 'r') as file:
+with open("../../input.txt", 'r') as file:
 	strings = file.read()
 
 seeds = [
@@ -38,6 +39,13 @@ maps = [
 
 print(maps)
 
+with open('input.json', 'w+') as file:
+	json.dump({
+		"seed_ranges": seed_ranges,
+		"maps": maps
+	}, file, indent=4)
+
+exit()
 
 mapped_seeds = []
 
@@ -55,4 +63,4 @@ for r in seed_ranges:
 		mapped_seeds.append(seed)
 	
 # print(mapped_seeds)
-print(min(mapped_seeds))
+# print(min(mapped_seeds))
