@@ -7,8 +7,8 @@ use std::io::Read;
 
 #[derive(Serialize, Deserialize)]
 struct Input {
-    seed_ranges: Vec<(u32, u32)>,
-    maps: Vec<Vec<(u32, u32, u32)>>,
+    seed_ranges: Vec<(u64, u64)>,
+    maps: Vec<Vec<(u64, u64, u64)>>,
 }
 
 fn main() {
@@ -19,5 +19,25 @@ fn main() {
     let json: Input =
         serde_json::from_str(&input).unwrap();
 
-    println!("{:?}", json.maps);
+    let mut mapped_seeds: Vec<u64> = Vec::new();
+
+    for range in json.seed_ranges {
+        for mut seed in range.0..range.1 {
+            for map in &json.maps {
+                for (dest, src, length) in map {
+                    if (src..&((src + length))).contains(&&seed) {
+                        seed = dest + seed - src;
+                        break;
+                    }
+                }
+            }
+            mapped_seeds.push(seed);
+        }
+    }
+
+    let lowest_distance = mapped_seeds.iter().min();
+    match lowest_distance {
+        Some(min) => println!( "Lowest distance is {}", min ),
+        None      => println!( "Vector is empty" ),
+    }
 }
