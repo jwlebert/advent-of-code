@@ -1,2 +1,6 @@
 target/
 input.json
+
+# apparently the FAQ says he doesn't want us to put our inputs
+input.txt
+ex_input.txt
