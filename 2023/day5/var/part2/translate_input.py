@@ -18,7 +18,7 @@ seed_ranges = [
 	in list(enumerate(seeds))[::2]
 ]
 
-print(seed_ranges)
+# print(seed_ranges)
 
 maps = [
 	[
@@ -37,7 +37,7 @@ maps = [
 	]
 ][2:]
 
-print(maps)
+# print(maps)
 
 with open('input.json', 'w+') as file:
 	json.dump({
